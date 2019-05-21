@@ -1,28 +1,33 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, Text, View, Image, TextInput } from 'react-native';
 import Click from './src/Click';
 import ListItem from './src/ListItem';
 
 export default class App extends Component {
   state = {
-    random: [12, 43]
+    random: [],
+    text: '',
+    users: []
   }
   onButtonPress = () => {
-    var num = Math.floor(Math.random() * 100 + 1);
-    this.setState(prevState => {
-      return {
-        random: [...prevState.random, num]
-      }
-    })
+    if (this.state.text) {
+      this.setState(prevState => {
+        return {
+          users: [...prevState.users, this.state.text],
+          text: ''
+        }
+      })
+    }
   }
 
-  onDelete=(m)=>{
-    const newArr=this.state.random.filter((item, id)=>{
-      return id!==m;
+  onDelete = (m) => {
+    const newArr = this.state.users.filter((item, id) => {
+      return id !== m;
     })
     this.setState(() => {
       return {
-        random: newArr
+        users: newArr,
+        text: ''
       }
     })
   }
@@ -30,10 +35,18 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.mainStyle}>
+
+        <Text style={styles.fontStyles}>{this.state.text || '#React_Native'}</Text>
         <ScrollView>
-          <Text style={styles.fontStyles}>Satyam Singh App 101</Text>
-          <Click onClick={this.onButtonPress}/>
-          <ListItem list={this.state.random} del={this.onDelete}/>
+          <Image
+            style={{ width: '100%', height: 200 }}
+            source={require('./assets/pic.jpg')} />
+          <TextInput
+            style={styles.inputBox}
+            onChangeText={(text) => this.setState({ text })}
+            value={this.state.text} />
+          <Click onClick={this.onButtonPress} />
+          <ListItem list={this.state.users} del={this.onDelete} />
         </ScrollView>
       </View>
     );
@@ -42,10 +55,15 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   mainStyle: {
-    backgroundColor: 'orange'
+
   },
   fontStyles: {
-    padding:30,
+    padding: 30,
     fontSize: 30
+  },
+  inputBox: {
+    borderColor: '#7a42f4',
+    borderWidth: 1,
+    margin: 5
   }
 })

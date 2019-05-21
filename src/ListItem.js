@@ -17,7 +17,6 @@ export default ListItem;
 const styles = StyleSheet.create({
     mainStyle: {
         backgroundColor: 'green'
-       
     },
     fontStyles: {
         backgroundColor:'white',
